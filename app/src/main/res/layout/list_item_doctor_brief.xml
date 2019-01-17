@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/doctor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姓张三名"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Expert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20年经验的国家级专业按脚技师"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/doctor_job"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="智障外科"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/doctor_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/doctor_name"
+         />
+
+
+        <TextView
+            android:id="@+id/positional_title"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:text="主治医师"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="@id/doctor_job"
+            app:layout_constraintTop_toBottomOf="@+id/doctor_job"/>
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

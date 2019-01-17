@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/red_cross"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textAlignment="center"
+        android:textColor="#ff0000"
+        android:textSize="100sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/best_wish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="祝君健康"
+        android:textAlignment="center"
+        android:textColor="#ff0000"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/red_cross" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textBrown"
+        app:layout_constraintBottom_toTopOf="@id/logRegister" />
+
+
+    <TextView
+        android:id="@+id/logRegister"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:text="登录/注册"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/best_wish" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textBrown"
+android:id="@+id/line"
+        app:layout_constraintTop_toBottomOf="@id/logRegister" />
+
+    <TextView
+        android:layout_margin="8dp"
+        android:id="@+id/Reservate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="我的预约"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/line" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textBrown"
+        android:id="@+id/line1"
+        app:layout_constraintTop_toBottomOf="@id/Reservate" />
+</android.support.constraint.ConstraintLayout>

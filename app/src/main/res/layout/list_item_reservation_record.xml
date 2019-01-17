@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+
+        <!--预约时间 预约医师名字 预约人-->
+        <TextView
+            android:id="@+id/doctor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="张三"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/reserve_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2019年1月30日上午"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/positional_title"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:text="神经外科"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/reserve_time"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/reserve_time" />
+
+        <TextView
+            android:id="@+id/department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="外科"
+            android:textStyle="bold"
+            android:textSize="23sp"
+            app:layout_constraintBottom_toBottomOf="@id/doctor_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/doctor_name" />
+
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>
