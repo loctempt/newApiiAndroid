@@ -43,7 +43,7 @@ public class RegisterFragment extends Fragment  implements RadioGroup.OnCheckedC
         muserName=v.findViewById(R.id.userName);
 
         musrAge=v.findViewById(R.id.userAge);
-        muserTel=v.findViewById(R.id.usertel);
+//        muserTel=v.findViewById(R.id.usertel);
         muserchecknum=v.findViewById(R.id.userchecknum);
         mchecknumBtn=v.findViewById(R.id.checknumbtn);
 
@@ -85,8 +85,8 @@ public class RegisterFragment extends Fragment  implements RadioGroup.OnCheckedC
         @Override
         protected JSONObject doInBackground(Void... params) {
             try {
-                JSONObject jsonObject = new JSONObject()
-                        .put("userTel", muserTel.getText());
+                JSONObject jsonObject = new JSONObject();
+//                        .put("userTel", muserTel.getText());
                 responseJson = new NetConnetcion(getContext()).Post(UrlBase.BASE+"require_validation", jsonObject.toString());
 
             } catch (JSONException | IOException e) {
@@ -115,12 +115,12 @@ public class RegisterFragment extends Fragment  implements RadioGroup.OnCheckedC
         protected JSONObject doInBackground(Void... params) {
             try {
                 JSONObject jsonObject = new JSONObject()
-                        .put("username", muserName.getText())
+                        .put("userName", muserName.getText())
                         .put("userAge", musrAge.getText())
-                        .put("userTel",muserTel.getText())
+//                        .put("userTel",muserTel.getText())
                         .put("validationCode",muserchecknum.getText())
                         .put("userSex",msharedPreferences.getString("userSex","无"));
-                responseJson=new NetConnetcion(getContext()).Post(UrlBase.BASE+"account_register", jsonObject.toString());
+                responseJson=new NetConnetcion(getContext()).Post(UrlBase.BASE+"register_user", jsonObject.toString());
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
             }
@@ -132,13 +132,11 @@ public class RegisterFragment extends Fragment  implements RadioGroup.OnCheckedC
             super.onPostExecute(responseJson);
             try {
                 if(responseJson.getString("status").equals("ok")){
-                    Toast.makeText(getContext(),responseJson.getString("message"),Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getContext(), DoctorListAcitivity.class);
-                    msharedPreferences.edit().putString("userTel",muserTel.getText().toString()).apply();
-                    i.putExtra(Intent.EXTRA_TEXT, msharedPreferences.getString("userTel", "null"));
-                    startActivity(i);
+                    Toast.makeText(getContext(),"注册成功",Toast.LENGTH_SHORT).show();
+//                    msharedPreferences.edit().putString("userTel",muserTel.getText().toString()).apply();
+                    getActivity().finish();
                 } else {
-                    Toast.makeText(getContext(),responseJson.getString("message"),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"验证码有误",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

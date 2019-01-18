@@ -19,28 +19,28 @@
         android:textColor="#000000"
         android:textSize="15dp" />
 
-    <EditText
-        android:id="@+id/userchecknum"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/usertel"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:hint="登录验证码"
-        android:inputType="text"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textColor="#000000"
-        android:textSize="15dp" />
+    <!--<EditText-->
+        <!--android:id="@+id/userchecknum"-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignStart="@+id/usertel"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:ems="10"-->
+        <!--android:hint="登录验证码"-->
+        <!--android:inputType="text"-->
+        <!--android:selectAllOnFocus="false"-->
+        <!--android:singleLine="false"-->
+        <!--android:textColor="#000000"-->
+        <!--android:textSize="15dp" />-->
 
-    <Button
-        android:id="@+id/checknumbtn"
-        android:layout_width="117dp"
-        android:layout_height="40dp"
-        android:layout_alignBottom="@+id/userchecknum"
-        android:layout_alignEnd="@+id/usertel"
-        android:text="获取验证码"
-        android:textColor="#000000" />
+    <!--<Button-->
+        <!--android:id="@+id/checknumbtn"-->
+        <!--android:layout_width="117dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_alignBottom="@+id/userchecknum"-->
+        <!--android:layout_alignEnd="@+id/usertel"-->
+        <!--android:text="获取验证码"-->
+        <!--android:textColor="#000000" />-->
 
     <Button
         android:id="@+id/loginbtn"
@@ -52,18 +52,18 @@
         android:text="登录"
         android:textColor="#000000" />
 
-    <Button
-        android:id="@+id/registerbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="231dp"
-        android:background="@android:color/transparent"
-        android:text="注册新用户"
-        android:textAllCaps="false"
-        android:textColor="@color/textBrown"
-        android:textSize="12sp"
-        android:typeface="normal" />
+    <!--<Button-->
+        <!--android:id="@+id/registerbtn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="23dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="231dp"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:text="注册新用户"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:textColor="@color/textBrown"-->
+        <!--android:textSize="12sp"-->
+        <!--android:typeface="normal" />-->
 
 </RelativeLayout>

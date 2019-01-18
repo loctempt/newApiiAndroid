@@ -7,4 +7,9 @@
     <color name="textBrown">#FF6C2323</color>
     <color name="textgrey">#FF8B8B98</color>
 
+    <color name="textDarkGrey">#545454</color>
+    <color name="textInvalid">#c7c7c7</color>
+    <color name="backgroundDefault">#f8f8f8</color>
+    <color name="backgroundGray">#dedede</color>
+
 </resources>

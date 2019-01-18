@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,27 +43,34 @@ public class ReservationRecordFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_reservation_record, container, false);
-        mReservationRecyclerView=v.findViewById(R.id.reservation_recycler_view);
+        mReservationRecyclerView = v.findViewById(R.id.reservation_recycler_view);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+        DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        mReservationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mReservationRecyclerView.addItemDecoration(divider);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("我的预约");
 
         activity.getSupportActionBar().setTitle(R.string.menu_item_my_reservation);
         new ReservationDetailItemFetchTask().execute();
         return v;
     }
-// todo 设计表项后再写
-    private class ReservationDetail{
+
+    private class ReservationDetail {
         private String doctorName;
         private String reservationTime;
         private String doctorDepartment;
-        private String doctotPositionalTitle;
+        private String doctorPositionalTitle;
         private boolean overdue;
-    public ReservationDetail( String DoctorName,String DoctotPositionalTitle, String DoctorDepartment,String ReservationTime,boolean OverDue){
-        doctorName=DoctorName;
-        doctotPositionalTitle=DoctotPositionalTitle;
-        reservationTime=ReservationTime;
-        doctorDepartment=DoctorDepartment;
-        overdue=OverDue;
-    }
+
+        public ReservationDetail(String DoctorName, String doctorPositionalTitle, String DoctorDepartment, String ReservationTime, boolean OverDue) {
+            doctorName = DoctorName;
+            this.doctorPositionalTitle = doctorPositionalTitle;
+            reservationTime = ReservationTime;
+            doctorDepartment = DoctorDepartment;
+            overdue = OverDue;
+        }
 
     }
 
@@ -80,8 +89,8 @@ public class ReservationRecordFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {
-                if (responseJsonInfo.getString("status").equals("ok") ) {
-                    ArrayList<ReservationDetail> reservationDetails= new ArrayList<>();
+                if (responseJsonInfo.getString("status").equals("ok")) {
+                    ArrayList<ReservationDetail> reservationDetails = new ArrayList<>();
                     JSONArray extra = responseJsonInfo.getJSONArray("extra");
                     for (int i = 0; i < extra.length(); i++) {
                         Log.d(TAG, "onPostExecute: 取出的元素 " + extra.getJSONObject(i).toString());
@@ -94,7 +103,6 @@ public class ReservationRecordFragment extends Fragment {
                                 reservationDetailJson.getBoolean("overdue")
                         ));
                     }
-//                    todO 多加了doctordepartment 字段
                     mReservationRecyclerView.setAdapter(new myReservationAdapter(reservationDetails));
 
                 }
@@ -110,6 +118,7 @@ public class ReservationRecordFragment extends Fragment {
         TextView mDoctorDepartment;
         TextView mDoctorName;
         TextView mDoctorPositionalTitle;
+        View mView;
 
         ReservationDetail mReservationDetail;
 
@@ -119,18 +128,29 @@ public class ReservationRecordFragment extends Fragment {
             mDoctorName = itemView.findViewById(R.id.doctor_name);
             mDoctorPositionalTitle = itemView.findViewById(R.id.positional_title);
             mDoctorDepartment = itemView.findViewById(R.id.department);
-
+            mView = itemView;
         }
 
         public void bind(ReservationDetail reservationDetail) {
             mReservationDetail = reservationDetail;
             mDoctorDepartment.setText(mReservationDetail.doctorDepartment);
             mDoctorName.setText(mReservationDetail.doctorName);
-            mDoctorPositionalTitle.setText(mReservationDetail.doctotPositionalTitle);
+            mDoctorPositionalTitle.setText(mReservationDetail.doctorPositionalTitle);
             mReservationTime.setText(mReservationDetail.reservationTime);
-//            if(!mReservationDetail.mOverDue){
+            if (mReservationDetail.overdue) {
 //               Drawable drawable=myReservationHolder.itemView.getBackground();
-//            }
+                mView.setBackgroundColor(getContext().getColor(R.color.backgroundGray));
+                mDoctorName.setTextColor(getContext().getColor(R.color.textInvalid));
+                mDoctorDepartment.setTextColor(getContext().getColor(R.color.textInvalid));
+                mDoctorPositionalTitle.setTextColor(getContext().getColor(R.color.textInvalid));
+                mReservationTime.setTextColor(getContext().getColor(R.color.textInvalid));
+            } else {
+                mView.setBackgroundColor(getContext().getColor(R.color.backgroundDefault));
+                mDoctorName.setTextColor(getContext().getColor(R.color.textDarkGrey));
+                mDoctorDepartment.setTextColor(getContext().getColor(R.color.textDarkGrey));
+                mDoctorPositionalTitle.setTextColor(getContext().getColor(R.color.textDarkGrey));
+                mReservationTime.setTextColor(getContext().getColor(R.color.textDarkGrey));
+            }
 
         }
     }
