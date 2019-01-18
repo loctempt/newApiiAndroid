@@ -1,5 +1,6 @@
 package cn.csu.sise.computerscience.myapplication;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,6 +48,10 @@ public class DoctorListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = getContext();
         sharedPreferences = mContext.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        getActivity().requestPermissions(new String[]{Manifest.permission.INTERNET,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        }, 1);
     }
 
     @Nullable
@@ -151,7 +156,6 @@ public class DoctorListFragment extends Fragment {
                                 doctorBriefJson.getString("doctorName"),
                                 doctorBriefJson.getString("doctorPositionalTitle"),
                                 doctorBriefJson.getString("doctorExpert")
-//                                todo 后端加doctorExpert字段
                         ));
                     }
                     mDoctorRecyclerView.setAdapter(new DoctorBriefAdapter(doctorBriefs));

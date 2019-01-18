@@ -1,5 +1,6 @@
 package cn.csu.sise.computerscience.myapplication;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -141,10 +142,32 @@ public class DoctorSelfInfoFragment extends Fragment {
                 mReservationButton.setText("预约已满");
             }
             mReservationButton.setOnClickListener(new View.OnClickListener() {
-                @SuppressWarnings("HandlerLeak")
                 @Override
                 public void onClick(View v) {
                     scheduleId = mDoctorSchedule.scheduleId;
+                    new pingTask().execute();
+                }
+            });
+        }
+    }
+
+    private class pingTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                responseJsonLogInStaus = new NetConnetcion(getContext()).Post(UrlBase.BASE + "ping", "");
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SuppressWarnings("HandlerLeak")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                if (responseJsonLogInStaus.getString("status").equals("ok")) {
                     PayDemoActivity.payV2(getActivity(), new Handler() {
                         @SuppressWarnings("unused")
                         public void handleMessage(Message msg) {
@@ -154,22 +177,26 @@ public class DoctorSelfInfoFragment extends Fragment {
                             String resultStatus = payResult.getResultStatus();
                             if (TextUtils.equals(resultStatus, "9000")) {
                                 Log.d(TAG, "handleMessage: 支付成功");
-                                new makeReservationTask().execute(mDoctorSchedule.scheduleId);
+                                new makeReservationTask().execute();
                             } else {
                                 Log.d(TAG, "handleMessage: 支付失败");
                             }
                         }
                     });
                 }
-            });
+                else{
+                    startActivity(new Intent(getContext(), LogInActivity.class));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private class makeReservationTask extends AsyncTask<String, Void, Void> {
+    private class makeReservationTask extends AsyncTask<Void, Void, Void> {
         @Override
-        protected Void doInBackground(String ... params) {
+        protected Void doInBackground(Void... params) {
             try {
-                String scheduleId = params[0];
                 responseJsonLogInStaus = new NetConnetcion(getContext()).Post(UrlBase.BASE + "data_alter/new_reservation", "{\"scheduleId\":"+scheduleId+"}");
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
