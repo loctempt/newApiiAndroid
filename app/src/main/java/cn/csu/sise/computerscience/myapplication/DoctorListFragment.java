@@ -127,7 +127,7 @@ public class DoctorListFragment extends Fragment {
         protected Void doInBackground(String... params) {
             try {
                 Log.d(TAG, "doInBackground: 请求医生列表");
-                mDoctorsJson = new NetConnetcion(getContext()).Post(UrlBase.BASE + "information/doctor_information_brief", "{\"doctorDepartment\":\"" + params[0] + "\"}");
+                mDoctorsJson = new NetConnetcion(getContext()).Post(UrlBase.BASE + "information/doctor_list", "{\"doctorDepartment\":\"" + params[0] + "\"}");
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
             }

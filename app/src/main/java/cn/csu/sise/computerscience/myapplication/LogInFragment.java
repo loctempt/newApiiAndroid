@@ -45,7 +45,10 @@ public class LogInFragment extends Fragment {
         mUserTel.setText("test");
         mUserChecknum.setText("8088");
 
-        getActivity().requestPermissions(new String[]{Manifest.permission.INTERNET}, 1);
+        getActivity().requestPermissions(new String[]{Manifest.permission.INTERNET,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        }, 1);
 
         mloginBtn = v.findViewById(R.id.loginbtn);
         mloginBtn.setOnClickListener(new View.OnClickListener() {

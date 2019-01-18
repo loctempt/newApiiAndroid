@@ -2,12 +2,15 @@ package cn.csu.sise.computerscience.myapplication;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +18,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.alipay.sdk.app.EnvUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
+
+import cn.csu.sise.computerscience.myapplication.alipay.PayDemoActivity;
+import cn.csu.sise.computerscience.myapplication.alipay.PayResult;
 
 import static cn.csu.sise.computerscience.myapplication.DoctorSelfInfoActivity.EXTRA_DOCTOR_ID;
 
@@ -44,6 +54,7 @@ public class DoctorSelfInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         doctorId = getActivity().getIntent().getStringExtra(EXTRA_DOCTOR_ID);
         new DoctorSelfInfoFetchTask().execute();
+        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
     }
 
     @Override
@@ -63,7 +74,7 @@ public class DoctorSelfInfoFragment extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         mReservationRecyclerView.addItemDecoration(divider);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.detail_title);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.detail_title);
 
         return v;
     }
@@ -124,27 +135,42 @@ public class DoctorSelfInfoFragment extends Fragment {
             mDoctorSchedule = doctorSchedule;
             mReservationTime.setText(mDoctorSchedule.doctorOnDutyDate + mDoctorSchedule.doctorOnDutyTime);
             mReservationButton.setEnabled(mDoctorSchedule.available);
-            if(!mDoctorSchedule.available){
+            if (!mDoctorSchedule.available) {
                 mReservationButton.setBackground(getContext().getDrawable(R.drawable.shape_disabled));
                 mReservationButton.setTextColor(getContext().getColor(R.color.white));
                 mReservationButton.setText("预约已满");
             }
             mReservationButton.setOnClickListener(new View.OnClickListener() {
+                @SuppressWarnings("HandlerLeak")
                 @Override
                 public void onClick(View v) {
                     scheduleId = mDoctorSchedule.scheduleId;
-                    new logInStatusFetchTask().execute();
-//                    todo 在跳转前加判断 是否登录 登录才可预约
+                    PayDemoActivity.payV2(getActivity(), new Handler() {
+                        @SuppressWarnings("unused")
+                        public void handleMessage(Message msg) {
+                            @SuppressWarnings("unchecked")
+                            PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                            String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                            String resultStatus = payResult.getResultStatus();
+                            if (TextUtils.equals(resultStatus, "9000")) {
+                                Log.d(TAG, "handleMessage: 支付成功");
+                                new makeReservationTask().execute(mDoctorSchedule.scheduleId);
+                            } else {
+                                Log.d(TAG, "handleMessage: 支付失败");
+                            }
+                        }
+                    });
                 }
             });
         }
     }
 
-    private class logInStatusFetchTask extends AsyncTask<Void,Void,Void>{
+    private class makeReservationTask extends AsyncTask<String, Void, Void> {
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String ... params) {
             try {
-                responseJsonLogInStaus = new NetConnetcion(getContext()).Post(UrlBase.BASE + "ping", "");
+                String scheduleId = params[0];
+                responseJsonLogInStaus = new NetConnetcion(getContext()).Post(UrlBase.BASE + "data_alter/new_reservation", "{\"scheduleId\":"+scheduleId+"}");
             } catch (JSONException | IOException e) {
                 e.printStackTrace();
             }
@@ -155,15 +181,15 @@ public class DoctorSelfInfoFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {
-                if (responseJsonInfo.getString("status").equals("ok") ) {
-                    startActivity(ReservationRecordActivity.getIntent(getContext(), scheduleId));
-//                    todo 接入sdk 付款
+                if (responseJsonInfo.getString("status").equals("ok")) {
+                    Toast.makeText(getContext(), "预约成功", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
+
     private class reservationAdapter extends RecyclerView.Adapter<reservationHolder> {
 
         private Doctor mDoctor;
